@@ -1,0 +1,22 @@
+{
+  "backtest_defaults": {
+    "initial_balance": 20,
+    "lot_size": 0.02,
+    "spread_points": 2,
+    "notification_mode": 0
+  },
+  "data_sourcing": {
+    "api_url": "https://api.mt5.flx.web.id/fetch_data_range",
+    "buffer_days": 4
+  },
+  "candle_counts": {
+    "m15_for_analysis": 50,
+    "m1_for_analysis": 50,
+    "m15_for_chart": 100,
+    "m1_for_chart": 100
+  },
+  "trade_rules": {
+    "order_expiry_minutes": 45,
+    "trade_time_limit_minutes": 60
+  }
+}
