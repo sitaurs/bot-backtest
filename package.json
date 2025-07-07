@@ -1,0 +1,22 @@
+{
+    "name": "ai-backtester-wa",
+    "version": "1.0.0",
+    "description": "A WhatsApp bot for backtesting AI-based trading strategies.",
+    "main": "index.js",
+    "scripts": {
+      "start": "node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+"dependencies": {
+    "@whiskeysockets/baileys": "^6.7.2",
+    "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
+    "moment-timezone": "^0.5.45",
+    "openai": "^4.52.0",
+    "pino-pretty": "^11.2.1",
+    "qrcode-terminal": "^0.12.0"
+  
+
+  }
+  }

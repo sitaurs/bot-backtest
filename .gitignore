@@ -1,0 +1,14 @@
+# Folder dependensi
+/node_modules
+
+# File environment yang berisi kunci API rahasia
+.env
+
+# Semua data yang dihasilkan oleh aplikasi
+/data/
+
+# File sesi Baileys
+session.json
+
+# File log lainnya
+*.log
