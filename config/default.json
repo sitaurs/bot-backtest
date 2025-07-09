@@ -13,7 +13,8 @@
     "m15_for_analysis": 50,
     "m1_for_analysis": 50,
     "m15_for_chart": 100,
-    "m1_for_chart": 100
+    "m1_for_chart": 100,
+    "skip_on_no_trade": { "m1": 90, "m15": 6 }
   },
   "trade_rules": {
     "order_expiry_minutes": 45,
