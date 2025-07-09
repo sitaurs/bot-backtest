@@ -74,7 +74,13 @@ async function runBacktest(backtestConfig, sock, jid) {
         // --- PERBAIKAN UTAMA LOGIKA SINKRONISASI M15 ---
         const currentCandleTime = new Date(currentCandle.time).getTime();
         // Temukan indeks candle M15 terakhir yang waktunya <= waktu M1 saat ini.
-        const m15EndIndex = m15Data.map(d => new Date(d.time).getTime()).findLastIndex(time => time <= currentCandleTime);
+        let m15EndIndex = -1;
+        for (let idx = m15Data.length - 1; idx >= 0; idx--) {
+          if (new Date(m15Data[idx].time).getTime() <= currentCandleTime) {
+            m15EndIndex = idx;
+            break;
+          }
+        }
         
         // Buat irisan data berdasarkan indeks yang benar
         const m1Slice = m1Data.slice(0, i + 1);
@@ -104,6 +110,9 @@ async function runBacktest(backtestConfig, sock, jid) {
           const m1ChartEndTime = m1ForChart[m1ForChart.length - 1].time;
           const m15ChartStartTime = m15ForChart[0].time;
           const m15ChartEndTime = m15ForChart[m15ForChart.length - 1].time;
+
+          logger.debug(`[Engine] Chart range M1: ${m1ChartStartTime} -> ${m1ChartEndTime}`);
+          logger.debug(`[Engine] Chart range M15: ${m15ChartStartTime} -> ${m15ChartEndTime}`);
 
           const m1ImagePath = await createChartImage(pair, '1m', m1ChartStartTime, m1ChartEndTime, chartPaths.m1_chart_file);
           const m15ImagePath = await createChartImage(pair, '15m', m15ChartStartTime, m15ChartEndTime, chartPaths.m15_chart_file);
@@ -142,8 +151,9 @@ async function runBacktest(backtestConfig, sock, jid) {
           if (tradeSignal) {
             tradeManager.addPendingOrder(tradeSignal, currentCandle.time, { start_time: ohlcForAI.m1[0].time, end_time: currentCandle.time });
           } else {
-            logger.info('[Engine] NO_TRADE, melompat 90 candle M1 berikutnya...');
-            i += 90;
+            const skipCfg = config.candle_counts.skip_on_no_trade || { m1: 90, m15: 6 };
+            logger.info(`[Engine] NO_TRADE, melompat ${skipCfg.m1} candle M1 berikutnya...`);
+            i += skipCfg.m1;
             continue;
           }
         } finally {
